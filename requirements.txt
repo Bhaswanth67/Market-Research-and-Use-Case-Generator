@@ -5,3 +5,4 @@ python-dotenv
 google-generativeai
 chromadb[full]
 pysqlite3-binary
+databricks-sdk
