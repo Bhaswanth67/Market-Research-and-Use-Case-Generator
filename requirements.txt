@@ -6,4 +6,4 @@ google-generativeai
 chromadb[full]
 pysqlite3-binary
 databricks-sdk
-sqlite3 >= 3.35.0
+sqlite3 == 3.35.0
