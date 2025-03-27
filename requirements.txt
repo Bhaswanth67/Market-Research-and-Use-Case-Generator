@@ -1,0 +1,7 @@
+crewai
+crewai-tools
+streamlit
+python-dotenv
+tavily-python
+google-generativeai
+langchain_groq
