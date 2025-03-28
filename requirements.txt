@@ -1,5 +1,4 @@
 crewai
-chromadb==0.4.24
 crewai-tools
 crewai[tools]
 streamlit
@@ -8,7 +7,4 @@ google-generativeai
 chromadb[full]
 pysqlite3-binary
 databricks-sdk
-ipython
-notebook
-black
-pylint
+pydantic
