@@ -9,3 +9,4 @@ pysqlite3
 pysqlite3-binary
 databricks-sdk
 pydantic
+libsqlite3-sys==0.26.0
