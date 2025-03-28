@@ -1,4 +1,4 @@
-crewai==0.17.3
+crewai
 chromadb==0.4.24
 crewai-tools
 crewai[tools]
