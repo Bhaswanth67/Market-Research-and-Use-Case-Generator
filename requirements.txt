@@ -1,8 +1,14 @@
-crewai
+crewai==0.17.3
+chromadb==0.4.24
 crewai-tools
+crewai[tools]
 streamlit
 python-dotenv
 google-generativeai
 chromadb[full]
 pysqlite3-binary
 databricks-sdk
+ipython
+notebook
+black
+pylint
