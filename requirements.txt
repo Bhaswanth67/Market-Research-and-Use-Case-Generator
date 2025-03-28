@@ -5,6 +5,7 @@ streamlit
 python-dotenv
 google-generativeai
 chromadb[full]
+pysqlite3
 pysqlite3-binary
 databricks-sdk
 pydantic
