@@ -27,6 +27,11 @@ llm = LLM(
     temperature=0.5
 )
 
+# llm = LLM(
+#     model="gemini/gemini-2.0-flash-exp",
+#     temperature=0.5
+# )
+
 # Initialize Serper tool for web searches
 serper_tool = SerperDevTool()
 
@@ -35,7 +40,7 @@ research_agent = Agent(
     role="Industry and Company Researcher",
     goal="Gather comprehensive information about the specified industry or company using Serper for web searches.",
     backstory="You are an expert researcher skilled in analyzing industries and companies using web tools. Use Serper for all search queries, including simple and complex searches.",
-    verbose=False,
+    verbose=False,  # Disable verbose output
     tools=[serper_tool],
     llm=llm
 )
@@ -44,7 +49,7 @@ use_case_agent = Agent(
     role="AI Use Case Proposer",
     goal="Analyze research data and propose relevant AI, ML, and GenAI use cases based on industry trends and company needs.",
     backstory="You are a creative AI specialist who identifies opportunities for technology to enhance operations and customer experiences.",
-    verbose=False,
+    verbose=False,  # Disable verbose output
     llm=llm
 )
 
@@ -52,7 +57,7 @@ resource_agent = Agent(
     role="Resource Link Collector",
     goal="Find and collect links to relevant datasets and resources for the proposed use cases using Serper.",
     backstory="You are a data curator adept at sourcing high-quality datasets from platforms like Kaggle, HuggingFace, and GitHub. Use Serper for all searches, including site-specific queries.",
-    verbose=False,
+    verbose=False,  # Disable verbose output
     tools=[serper_tool],
     llm=llm
 )
@@ -61,7 +66,7 @@ report_agent = Agent(
     role="Report Compiler",
     goal="Compile the final proposal with use cases and resource links in markdown format.",
     backstory="You are a skilled writer who creates clear, actionable reports for stakeholders.",
-    verbose=False,
+    verbose=False,  # Disable verbose output
     llm=llm
 )
 
@@ -102,7 +107,7 @@ domains_list = [
     "Supply Chain", "Marketing", "Human Resources", "Research and Development"
 ]
 selected_domains = st.multiselect("Select domains to focus on (optional)", domains_list)
-st Writes("Select domains to focus the research. If none are selected, the research will be general.")
+st.write("Select domains to focus the research. If none are selected, the research will be general.")
 
 # User Input
 company_or_industry = st.text_input("Enter a company or industry (e.g., Tesla, Automotive):", "")
@@ -174,17 +179,16 @@ if st.button("Generate Proposal"):
                 research_output = research_task.execute_sync(agent=research_agent)
 
                 st.write(f"Agent: {use_case_agent.role} is proposing AI use cases for {company_or_industry}.")
-                use_case_output = use_case_task.execute_sync(agent=use_case_agent, context=research_output.raw)
+                use_case_output = use_case_task.execute_sync(agent=use_case_agent, context=research_output)
 
                 st.write(f"Agent: {resource_agent.role} is collecting resource links for the use cases.")
-                resource_output = resource_task.execute_sync(agent=resource_agent, context=use_case_output.raw)
+                resource_output = resource_task.execute_sync(agent=resource_agent, context=use_case_output)
 
                 st.write(f"Agent: {report_agent.role} is compiling the final proposal.")
-                report_context = "\n\n".join([research_output.raw, use_case_output.raw, resource_output.raw])
-                report_output = report_task.execute_sync(agent=report_agent, context=report_context)
+                report_output = report_task.execute_sync(agent=report_agent, context=[research_output, use_case_output, resource_output])
 
-                # Extract the final output
-                result = report_output.raw
+                # Extract the final output (adjust based on actual attribute)
+                result = report_output.raw  # May need to be report_output.raw or similar; check CrewAI docs
 
                 # Display success message
                 st.write("✅ **Proposal generated successfully!**")
