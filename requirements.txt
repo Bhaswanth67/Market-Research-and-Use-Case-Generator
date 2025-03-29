@@ -4,7 +4,9 @@ crewai[tools]
 streamlit
 python-dotenv
 google-generativeai
+chromadb
 chromadb[full]
 pysqlite3
 pysqlite3-binary
 db-sqlite3
+chromadb-pysqlite3
