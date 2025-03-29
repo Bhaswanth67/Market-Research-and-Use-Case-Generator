@@ -6,7 +6,7 @@ Welcome to the **Market Research and Use Case Generator**, a powerful Streamlit 
 
 ## What Is This Project?
 
-The **Market Research and Use Case Generator** is an open-source tool that enables users to input a company name (e.g., "Tesla") or an industry (e.g., "Automotive") and generate a detailed proposal. The proposal includes:
+The **Market Research and Use Case Generator** is a tool that enables users to input a company name (e.g., "Tesla") or an industry (e.g., "Automotive") and generate a detailed proposal. The proposal includes:
 
 - **Research Insights**: Key findings about the company or industry, sourced from web searches.
 - **Proposed Use Cases**: AI-driven suggestions for applying AI, ML, or GenAI to improve operations, customer experiences, or innovation.
@@ -76,10 +76,15 @@ market-research-and-use-case-generator/
 ├── app.py                  # Main Streamlit application file
 ├── requirements.txt        # List of Python dependencies
 └── proposals/              # Directory for generated markdown proposals
-    ├── Apple_20250327_222441.md
-    ├── Nvidia_20250327_010622.md
-    └── Tesla_20250327_211020.md
 ```
+### Preview
+![User_Interface](userinterface.png)
+
+### Flowchart
+![Flowchart](flowchart.png)
+
+### Architecture Diagram
+![Architecture Diagram](architecture.png)
 
 ---
 
