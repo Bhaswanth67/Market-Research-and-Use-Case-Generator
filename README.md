@@ -114,15 +114,3 @@ streamlit run app.py
 Open your browser to `http://localhost:8501` to access the interface.
 
 ---
-
-
----
-
-## Acknowledgments
-
-- Built with love using **Streamlit, CrewAI, and Python**.
-- Powered by the **Gemini API and Serper API**.
-- Inspired by the need to simplify market research and proposal generation.
-
-Feel free to star the repository, raise issues, or reach out with suggestions. Happy generating!
-
