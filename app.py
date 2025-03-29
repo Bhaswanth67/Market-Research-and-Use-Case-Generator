@@ -24,21 +24,56 @@ if not SERPER_API_KEY:
     st.error("Serper API key is not set. Please set SERPER_API_KEY in your environment variables.")
     st.stop()
 
-# Initialize Gemini LLM 
-llm = LLM(
-    model="gemini/gemini-2.0-flash-thinking-exp-01-21",
-    temperature=0.5
-)
-
-# llm = LLM(
-#     model="gemini/gemini-2.0-flash-exp",
-#     temperature=0.5
-# )
-
 # Initialize Serper tool for web searches
 serper_tool = SerperDevTool()
 
-# Define Agents with verbose=False
+# Streamlit App
+st.set_page_config(page_title="Market Research & Use Case Generator", page_icon="🤖")
+st.title("Market Research & Use Case Generator")
+
+# Create proposals directory if it doesn’t exist
+if not os.path.exists("proposals"):
+    os.makedirs("proposals")
+
+# List previous proposals
+proposal_files = [f for f in os.listdir("proposals") if f.endswith(".md")]
+proposal_files.sort(key=lambda x: os.path.getmtime(os.path.join("proposals", x)), reverse=True)
+
+# Previous Proposals Section
+st.subheader("Previous Proposals")
+if proposal_files:
+    selected_proposal = st.selectbox("Select a previous proposal", proposal_files)
+    with open(os.path.join("proposals", selected_proposal), "r") as f:
+        data = f.read()
+    st.download_button(
+        label="Download Selected Proposal",
+        data=data,
+        file_name=selected_proposal,
+        mime="text/markdown"
+    )
+    if st.button("Delete Selected Proposal"):
+        os.remove(os.path.join("proposals", selected_proposal))
+        st.success(f"Deleted {selected_proposal}")
+        st.experimental_rerun()
+else:
+    st.info("No previous proposals found.")
+
+# Generate New Proposal Section
+st.subheader("Generate New Proposal")
+st.write("Select the LLM model to use for generating the proposal:")
+
+# Model selection radio button
+model_options = {
+    "Gemini 2.0 Flash": "gemini/gemini-2.0-flash-thinking-exp-01-21",
+    "Gemini 2.5 Pro": "gemini/gemini-2.5-pro-exp-03-25"
+}
+model_option = st.radio("LLM Model", list(model_options.keys()))
+model_name = model_options[model_option]
+
+# Initialize LLM with the selected model
+llm = LLM(model=model_name, temperature=0.5)
+
+# Define Agents with the selected LLM
 research_agent = Agent(
     role="Industry and Company Researcher",
     goal="Gather comprehensive information about the specified industry or company using Serper for web searches.",
@@ -72,37 +107,6 @@ report_agent = Agent(
     verbose=False,  # Disable verbose output
     llm=llm
 )
-
-# Streamlit App
-st.set_page_config(page_title="Market Research & Use Case Generator", page_icon="🤖")
-st.title("Market Research & Use Case Generator")
-
-# Create proposals directory if it doesn’t exist
-if not os.path.exists("proposals"):
-    os.makedirs("proposals")
-
-# List previous proposals
-proposal_files = [f for f in os.listdir("proposals") if f.endswith(".md")]
-proposal_files.sort(key=lambda x: os.path.getmtime(os.path.join("proposals", x)), reverse=True)
-
-# Previous Proposals Section
-st.subheader("Previous Proposals")
-if proposal_files:
-    selected_proposal = st.selectbox("Select a previous proposal", proposal_files)
-    with open(os.path.join("proposals", selected_proposal), "r") as f:
-        data = f.read()
-    st.download_button(
-        label="Download Selected Proposal",
-        data=data,
-        file_name=selected_proposal,
-        mime="text/markdown"
-    )
-    if st.button("Delete Selected Proposal"):
-        os.remove(os.path.join("proposals", selected_proposal))
-        st.success(f"Deleted {selected_proposal}")
-        st.experimental_rerun()
-else:
-    st.info("No previous proposals found.")
 
 # Domain Selection
 domains_list = [
