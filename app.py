@@ -24,7 +24,7 @@ if not SERPER_API_KEY:
     st.error("Serper API key is not set. Please set SERPER_API_KEY in your environment variables.")
     st.stop()
 
-# Initialize Gemini LLM (unchanged as per user request)
+# Initialize Gemini LLM 
 llm = LLM(
     model="gemini/gemini-2.0-flash-thinking-exp-01-21",
     temperature=0.5
@@ -182,16 +182,17 @@ if st.button("Generate Proposal"):
                 research_output = research_task.execute_sync(agent=research_agent)
 
                 st.write(f"Agent: {use_case_agent.role} is proposing AI use cases for {company_or_industry}.")
-                use_case_output = use_case_task.execute_sync(agent=use_case_agent, context=research_output)
+                use_case_output = use_case_task.execute_sync(agent=use_case_agent, context=research_output.raw)
 
                 st.write(f"Agent: {resource_agent.role} is collecting resource links for the use cases.")
-                resource_output = resource_task.execute_sync(agent=resource_agent, context=use_case_output)
+                resource_output = resource_task.execute_sync(agent=resource_agent, context=use_case_output.raw)
 
                 st.write(f"Agent: {report_agent.role} is compiling the final proposal.")
-                report_output = report_task.execute_sync(agent=report_agent, context=[research_output, use_case_output, resource_output])
+                report_context = f"{research_output.raw}\n\n{use_case_output.raw}\n\n{resource_output.raw}"
+                report_output = report_task.execute_sync(agent=report_agent, context=report_context)
 
-                # Extract the final output (adjust based on actual attribute)
-                result = report_output.raw  # May need to be report_output.raw or similar; check CrewAI docs
+                # Extract the final output
+                result = report_output.raw  # Assuming 'raw' is the attribute for the string output
 
                 # Display success message
                 st.write("✅ **Proposal generated successfully!**")
