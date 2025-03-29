@@ -64,7 +64,7 @@ st.write("Select the LLM model to use for generating the proposal:")
 
 # Model selection radio button
 model_options = {
-    "Gemini 2.0 Flash": "gemini/gemini-2.0-flash-thinking-exp-01-21",
+    "Gemini 2.0 Flash Thinking": "gemini/gemini-2.0-flash-thinking-exp-01-21",
     "Gemini 2.5 Pro": "gemini/gemini-2.5-pro-exp-03-25"
 }
 model_option = st.radio("LLM Model", list(model_options.keys()))
